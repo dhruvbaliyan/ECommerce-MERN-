@@ -1,0 +1,23 @@
+[
+    {
+      "_id": { "$oid": "650000000000000000000001" },
+      "code": "SAVE10",
+      "discountPercentage": 10,
+      "expirationDate": { "$date": "2026-12-31T23:59:59.000Z" },
+      "isActive": true,
+      "userId": { "$oid": "68dd4890ba25a86a8bcac8ff" },
+      "createdAt": { "$date": "2025-10-01T00:00:00.000Z" },
+      "updatedAt": { "$date": "2025-10-01T00:00:00.000Z" }
+    },
+    {
+      "_id": { "$oid": "650000000000000000000002" },
+      "code": "SAVE20",
+      "discountPercentage": 20,
+      "expirationDate": { "$date": "2026-12-31T23:59:59.000Z" },
+      "isActive": true,
+      "userId": { "$oid": "68dce18ee737ed0e57a5d3fa" },
+      "createdAt": { "$date": "2025-10-01T00:00:00.000Z" },
+      "updatedAt": { "$date": "2025-10-01T00:00:00.000Z" }
+    }
+  ]
+  

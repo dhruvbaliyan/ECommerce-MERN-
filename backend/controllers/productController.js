@@ -12,65 +12,63 @@ export const getProducts = async (req, res) => {
 	}
 };
 
-// export const createProduct = async (req, res) => {
-// 	try {
-// 		const { name, description, price, image, category ,isFeatured} = req.body;
-
-//         let cloudinaryResponse = null;
-
-//         if (image ) {
-// 			cloudinaryResponse = await cloudinary.uploader.upload(image, { folder: "products" });
-// 		  }
-		  
-//         const product = await Product.create({
-// 			name,
-// 			description,
-// 			price,
-// 			image: cloudinaryResponse?.secure_url ? cloudinaryResponse.secure_url : "",
-// 			category,
-// 			isFeatured
-// 		});
-
-//         res.status(201).json(product);
-
-// 	} catch (error) {
-// 		console.log("Error in createProduct controller", error.message);
-// 		res.status(500).json({ message: "Server error", error: error.message });
-// 	}
-// };
-
 export const createProduct = async (req, res) => {
 	try {
-	  const { name, description, price, category, isFeatured } = req.body;
-  
-	  if (!req.file) {
-		return res.status(400).json({ message: "Image file is required" });
-	  }
-  
-	  // Convert buffer to base64 string for Cloudinary
-	  const base64Image = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
-  
-	  // Upload to Cloudinary
-	  const cloudRes = await cloudinary.uploader.upload(base64Image, {
-		folder: "products",
-	  });
-  
-	  const product = await Product.create({
-		name,
-		description,
-		price,
-		category,
-		isFeatured,
-		image: cloudRes.secure_url,
-	  });
-  
-	  res.status(201).json(product);
-  
+		const { name, description, price, image, category } = req.body;
+
+		let cloudinaryResponse = null;
+
+		if (image) {
+			cloudinaryResponse = await cloudinary.uploader.upload(image, { folder: "products" });
+		}
+
+		const product = await Product.create({
+			name,
+			description,
+			price,
+			image: cloudinaryResponse?.secure_url ? cloudinaryResponse.secure_url : "",
+			category,
+		});
+
+		res.status(201).json(product);
 	} catch (error) {
-	  console.log("Error in createProduct controller", error.message);
-	  res.status(500).json({ message: "Server error", error: error.message });
+		console.log("Error in createProduct controller", error.message);
+		res.status(500).json({ message: "Server error", error: error.message });
 	}
-  };
+};
+
+// export const createProduct = async (req, res) => {
+// 	try {
+// 	  const { name, description, price, category, isFeatured } = req.body;
+  
+// 	  if (!req.file) {
+// 		return res.status(400).json({ message: "Image file is required" });
+// 	  }
+  
+// 	  // Convert buffer to base64 string for Cloudinary
+// 	  const base64Image = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+  
+// 	  // Upload to Cloudinary
+// 	  const cloudRes = await cloudinary.uploader.upload(base64Image, {
+// 		folder: "products",
+// 	  });
+  
+// 	  const product = await Product.create({
+// 		name,
+// 		description,
+// 		price,
+// 		category,
+// 		isFeatured,
+// 		image: cloudRes.secure_url,
+// 	  });
+  
+// 	  res.status(201).json(product);
+  
+// 	} catch (error) {
+// 	  console.log("Error in createProduct controller", error.message);
+// 	  res.status(500).json({ message: "Server error", error: error.message });
+// 	}
+//   };
   
 
 export const getFeaturedProducts = async(req,res)=>{
@@ -174,4 +172,16 @@ export const deleteProduct = async(req,res)=>{
         console.log("Error in deleteProduct controller", error.message);
 		res.status(500).json({ message: "Server error", error: error.message });
     }
+}
+
+
+async function updateFeaturedProductsCache() {
+	try {
+		// The lean() method  is used to return plain JavaScript objects instead of full Mongoose documents. This can significantly improve performance
+
+		const featuredProducts = await Product.find({ isFeatured: true }).lean();
+		await redis.set("featured_products", JSON.stringify(featuredProducts));
+	} catch (error) {
+		console.log("error in update cache function");
+	}
 }
