@@ -61,13 +61,13 @@ app.use("/api/v2/coupons", couponRoute);
 app.use("/api/v2/payments", paymentRoute);
 app.use("/api/v2/analytics", analyticsRoutes);
 
-// Serve React frontend in production
+// Serve frontend in production
 if (process.env.NODE_ENV === "production") {
   const frontendPath = path.join(__dirname, "frontend", "dist");
   app.use(express.static(frontendPath));
 
-  // Catch-all route for React SPA (Express 5 compatible)
-  app.get("/:pathMatch(.*)*", (req, res) => {
+  // React SPA catch-all
+  app.get("*", (req, res) => {
     res.sendFile(path.join(frontendPath, "index.html"));
   });
 }
