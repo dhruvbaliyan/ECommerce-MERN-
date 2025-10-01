@@ -9,6 +9,6 @@ router.use(protectRoute);
 
 router.post('/create-checkout-session' , createCheckoutSession)
 
-router.get('/checkout-success' , checkoutSuccess)
+router.post('/checkout-success' , checkoutSuccess)
 
 export default router;
