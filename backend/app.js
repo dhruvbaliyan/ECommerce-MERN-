@@ -21,37 +21,37 @@ const allowedOrigins = [
   "https://ecommerce-mern-pkl1.onrender.com", // production
 ];
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true);
-      if (!allowedOrigins.includes(origin)) {
-        return callback(
-          new Error("CORS policy does not allow access from this origin."),
-          false
-        );
-      }
-      return callback(null, true);
-    },
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: function (origin, callback) {
+//       if (!origin) return callback(null, true);
+//       if (!allowedOrigins.includes(origin)) {
+//         return callback(
+//           new Error("CORS policy does not allow access from this origin."),
+//           false
+//         );
+//       }
+//       return callback(null, true);
+//     },
+//     credentials: true,
+//   })
+// );
 
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      useDefaults: true,
-      directives: {
-        "connect-src": ["'self'", "https://api.stripe.com"],
-        "img-src": ["'self'", "https://*.stripe.com"],
-        "script-src": ["'self'", "https://js.stripe.com"],
-      },
-    },
-  })
-);
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: {
+//       useDefaults: true,
+//       directives: {
+//         "connect-src": ["'self'", "https://api.stripe.com"],
+//         "img-src": ["'self'", "https://*.stripe.com"],
+//         "script-src": ["'self'", "https://js.stripe.com"],
+//       },
+//     },
+//   })
+// );
 
 // API routes
 app.use("/api/v2/auth", authRoutes);
