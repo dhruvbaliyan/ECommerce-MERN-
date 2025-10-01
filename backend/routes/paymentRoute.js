@@ -8,6 +8,7 @@ const router = express.Router();
 router.use(protectRoute);
 
 router.post('/create-checkout-session' , createCheckoutSession)
-router.post('/checkout-success' , checkoutSuccess)
+
+router.get('/checkout-success' , checkoutSuccess)
 
 export default router;
